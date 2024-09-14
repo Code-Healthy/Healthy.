@@ -24,6 +24,4 @@ public class Expert {
     @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;
 
-    @OneToMany(mappedBy = "expert", cascade = CascadeType.ALL)
-    private List<Resource> resources;
 }
