@@ -11,6 +11,6 @@ public interface AdminHabitTypeService {
     Page<HabitType> paginate(Pageable pageable);
     HabitType findById(Integer id);
     HabitType create(HabitType habitType);
-    HabitType update(Integer id, HabitType habitType);
+    HabitType update(Integer id, HabitType updateHabitType);
     void delete(Integer id);
 }

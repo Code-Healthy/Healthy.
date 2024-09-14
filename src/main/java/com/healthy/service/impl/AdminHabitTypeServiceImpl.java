@@ -4,7 +4,6 @@ import com.healthy.model.entity.HabitType;
 import com.healthy.repository.HabitTypeRepository;
 import com.healthy.service.AdminHabitTypeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -46,8 +46,8 @@ public class AdminHabitTypeController {
     @PutMapping("/{id}")
     public ResponseEntity<HabitType> updateHabitType(@PathVariable("id") Integer id,
                                                      @RequestBody HabitType habitType) {
-        HabitType updateHabitType = adminHabitTypeService.update(id,habitType);
-        return new ResponseEntity<HabitType>(updateHabitType, HttpStatus.OK);
+        HabitType updatedHabitType = adminHabitTypeService.update(id,habitType);
+        return new ResponseEntity<HabitType>(updatedHabitType, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
