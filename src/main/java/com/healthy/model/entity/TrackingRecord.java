@@ -14,10 +14,6 @@ public class TrackingRecord {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name ="FK_tracking_record_user"))
-    private User user;
-
-    @ManyToOne
     @JoinColumn(name = "goal_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_tracking_record_goal"))
     private Goal goal;
 

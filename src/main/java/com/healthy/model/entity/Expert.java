@@ -2,6 +2,7 @@ package com.healthy.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,4 +23,7 @@ public class Expert {
 
     @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;
+
+    @OneToMany(mappedBy = "expert", cascade = CascadeType.ALL)
+    private List<Resource> resources;
 }
