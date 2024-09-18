@@ -1,13 +1,7 @@
--- Insertando datos en la tabla 'goals'
-INSERT INTO public.goals (id, user_id, habit_id, target_value, current_value, start_date, end_date, goal_status)
+-- Insertando datos en la tabla plans
+
+INSERT INTO plans (user_id, name, description, start_date, end_date, plan_status)
 VALUES
-    (1, 101, 201, 50.0, 10.0, '2024-01-01 00:00:00', '2024-12-31 23:59:59', 'IN_PROGRESS'),
-    (2, 102, 202, 100.0, 20.0, '2024-02-01 00:00:00', '2024-11-30 23:59:59', 'IN_PROGRESS'),
-    (3, 103, 203, 200.0, 150.0, '2024-03-01 00:00:00', '2024-12-15 23:59:59', 'ACHIEVED'),
-    (4, 104, 204, 75.0, 50.0, '2024-04-01 00:00:00', '2024-10-31 23:59:59', 'IN_PROGRESS'),
-    (5, 105, 205, 120.0, 30.0, '2024-05-01 00:00:00', '2024-12-31 23:59:59', 'IN_PROGRESS'),
-    (6, 106, 206, 90.0, 90.0, '2024-06-01 00:00:00', '2024-09-15 23:59:59', 'ACHIEVED'),
-    (7, 107, 207, 60.0, 40.0, '2024-07-01 00:00:00', '2024-12-01 23:59:59', 'IN_PROGRESS'),
-    (8, 108, 208, 150.0, 75.0, '2024-08-01 00:00:00', '2024-12-20 23:59:59', 'IN_PROGRESS'),
-    (9, 109, 209, 110.0, 110.0, '2024-09-01 00:00:00', '2024-12-31 23:59:59', 'ACHIEVED'),
-    (10, 110, 210, 95.0, 50.0, '2024-10-01 00:00:00', '2024-12-25 23:59:59', 'IN_PROGRESS');
+    (101, 'Fitness Plan', 'A 3-month workout routine designed to build strength and endurance.', '2024-01-01 08:00:00', '2024-04-01 08:00:00', 'ACTIVE'),
+    (102, 'Healthy Eating Plan', 'A nutritional guide for healthy eating over a 6-month period.', '2024-02-01 08:00:00', '2024-08-01 08:00:00', 'COMPLETED'),
+    (103, 'Reading Challenge', 'A plan to read 10 books in 3 months.', '2024-03-01 08:00:00', '2024-06-01 08:00:00', 'ABANDONED');
