@@ -27,6 +27,4 @@ public class Habit {
     @Column(name = "frequency")
     private Frequency frequency;
 
-    @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL)
-    private List<Goal> goals;
 }
