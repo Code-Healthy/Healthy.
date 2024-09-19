@@ -1,6 +1,7 @@
 package com.healthy.api;
 
 
+import com.healthy.dto.ResourceCreateUpdateDTO;
 import com.healthy.dto.ResourceDTO;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -46,14 +47,14 @@ public class AdminResourceController {
     }
 
     @PostMapping
-    public ResponseEntity<ResourceDTO> create(@Valid @RequestBody ResourceDTO resourceDTO) {
-        ResourceDTO createdResource = adminResourceService.create(resourceDTO);
+    public ResponseEntity<ResourceDTO> create(@Valid @RequestBody ResourceCreateUpdateDTO resourceFromDto) {
+        ResourceDTO createdResource = adminResourceService.create(resourceFromDto);
         return new ResponseEntity<>(createdResource, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResourceDTO> updateResource(@PathVariable("id") Integer id,
-                                                   @Valid @RequestBody ResourceDTO resourceDTO) {
+                                                   @Valid @RequestBody ResourceCreateUpdateDTO resourceDTO) {
         ResourceDTO updateResource = adminResourceService.update(id, resourceDTO);
         return new ResponseEntity<>(updateResource, HttpStatus.OK);
     }
