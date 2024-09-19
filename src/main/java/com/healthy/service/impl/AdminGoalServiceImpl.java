@@ -1,5 +1,6 @@
 package com.healthy.service.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.healthy.model.entity.Goal;
 import com.healthy.repository.GoalRepository;
 import com.healthy.service.AdminGoalService;
@@ -17,6 +18,7 @@ import java.util.List;
 public class AdminGoalServiceImpl implements AdminGoalService {
 
     private final GoalRepository goalRepository;
+
 
     @Transactional(readOnly = true)
     @Override
@@ -45,6 +47,11 @@ public class AdminGoalServiceImpl implements AdminGoalService {
         goalFromDb.setGoalStatus(updateGoal.getGoalStatus());
         goalFromDb.setTargetValue(updateGoal.getTargetValue());
         goalFromDb.setCurrentValue(updateGoal.getCurrentValue());
+        goalFromDb.setHabit(updateGoal.getHabit());
+        goalFromDb.setPlan(updateGoal.getPlan());
+        goalFromDb.setId(updateGoal.getId());
+        goalFromDb.setUser(updateGoal.getUser());
+        goalFromDb.setTrackingRecords(updateGoal.getTrackingRecords());
         return goalRepository.save(goalFromDb);
     }
 

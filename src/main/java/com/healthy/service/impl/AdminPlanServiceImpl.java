@@ -51,6 +51,10 @@ public class AdminPlanServiceImpl implements AdminPlanService {
         planFromDb.setDescription(updatePlan.getDescription());
         planFromDb.setStartDate(updatePlan.getStartDate());
         planFromDb.setEndDate(updatePlan.getEndDate());
+        planFromDb.setId(updatePlan.getId());
+        planFromDb.setPlanStatus(updatePlan.getPlanStatus());
+        planFromDb.setUser(updatePlan.getUser());
+        planFromDb.setGoals(updatePlan.getGoals());
         return planRepository.save(planFromDb);
     }
 
