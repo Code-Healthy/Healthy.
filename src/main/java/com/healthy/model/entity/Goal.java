@@ -15,6 +15,10 @@ public class Goal {
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_user"))
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "habit_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_habit"))
     private Habit habit;
 

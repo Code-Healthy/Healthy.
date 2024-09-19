@@ -16,6 +16,10 @@ public class Subscription {
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subscription_user"))
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "resource_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subscription_resource"))
     private Resource resource;
 

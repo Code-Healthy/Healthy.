@@ -21,4 +21,8 @@ public class TrackingRecord {
 
     @Column(name = "note")
     private String note;
+
+    @ManyToOne
+    @JoinColumn(name = "goal_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_tracking_record_goal"))
+    private Goal goal;
 }
