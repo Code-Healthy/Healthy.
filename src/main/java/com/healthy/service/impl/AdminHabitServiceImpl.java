@@ -52,12 +52,12 @@ public class AdminHabitServiceImpl implements AdminHabitService {
     @Transactional
     @Override
     public HabitDetailsDTO create(HabitCreateUpdateDTO habitCreateUpdateDTO) {
-        HabitType habitType = habitTypeRepository.findById(habitCreateUpdateDTO.getId())
+        HabitType habitType = habitTypeRepository.findById(habitCreateUpdateDTO.getHabitTypeId())
                 .orElseThrow(()-> new RuntimeException("Habit type not found with id: "+habitCreateUpdateDTO.getHabitTypeId()));
 
-        Profile profile = profileMapper.toEntity(profileCreateUpdateDTO);
-        profile.setUser(user);
-        return profileMapper.toDetailsDTO(profileRepository.save(profile));
+        Habit habit = habitMapper.toEntity(habitCreateUpdateDTO);
+        habit.setHabitType(habitType);
+        return habitMapper.toDetailsDTO(habitRepository.save(habit));
     }
 
     @Transactional
@@ -70,14 +70,15 @@ public class AdminHabitServiceImpl implements AdminHabitService {
                 .orElseThrow(()-> new RuntimeException("HabitType not found with id: "+habitCreateUpdateDTO.getHabitTypeId()));
 
 
-        profileFromDb.setUser(user);
-        profileFromDb.setAge(updatedProfile.getAge());
-        profileFromDb.setGender(updatedProfile.getGender());
-        profileFromDb.setHeight(updatedProfile.getHeight());
-        profileFromDb.setWeight(updatedProfile.getWeight());
-        profileFromDb.setHealthConditions(updatedProfile.getHealthConditions());
+        habitFromDb.setHabitType(habitType);
+        habitFromDb.setId(habitCreateUpdateDTO.getId());
+        habitFromDb.setFrequency(habitCreateUpdateDTO.getFrequency());
+        habitFromDb.setName(habitCreateUpdateDTO.getName());
+        habitFromDb.setDescription(habitCreateUpdateDTO.getDescription());
 
-        return profileMapper.toDetailsDTO(profileRepository.save(profileFromDb));
+
+
+        return habitMapper.toDetailsDTO(habitRepository.save(habitFromDb));
     }
 
     @Transactional

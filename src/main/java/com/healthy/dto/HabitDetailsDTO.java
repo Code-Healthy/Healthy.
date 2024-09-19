@@ -8,7 +8,7 @@ public class HabitDetailsDTO {
     private Integer id;
     private String name;
     private String description;
-    private String frequency;
+    private Frequency frequency;
 
     private String habitTypeName;
     private String habitTypeDescription;

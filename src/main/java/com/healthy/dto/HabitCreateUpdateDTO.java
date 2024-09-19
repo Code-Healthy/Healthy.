@@ -9,7 +9,7 @@ public class HabitCreateUpdateDTO {
     private Integer id;
     private String name;
     private String description;
-    private String frequency;
+    private Frequency frequency;
 
     private Integer habitTypeId;
 }
