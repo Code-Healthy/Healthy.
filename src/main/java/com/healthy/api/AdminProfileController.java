@@ -1,7 +1,10 @@
 package com.healthy.api;
 
+import com.healthy.dto.ProfileCreateUpdateDTO;
+import com.healthy.dto.ProfileDetailsDTO;
 import com.healthy.model.entity.Profile;
 import com.healthy.service.AdminProfileService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,33 +24,33 @@ public class AdminProfileController {
     private final AdminProfileService adminProfileService;
 
     @GetMapping
-    public ResponseEntity<List<Profile>> list(){
-        List<Profile> profiles = adminProfileService.getAll();
+    public ResponseEntity<List<ProfileDetailsDTO>> list(){
+        List<ProfileDetailsDTO> profiles = adminProfileService.getAll();
         return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Profile>> paginate(
+    public ResponseEntity<Page<ProfileDetailsDTO>> paginate(
             @PageableDefault(size=5, sort= "gender")Pageable pageable){
-        Page<Profile>  page = adminProfileService.paginate(pageable);
+        Page<ProfileDetailsDTO>  page = adminProfileService.paginate(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Profile> getById(@PathVariable Integer id){
-        Profile profile = adminProfileService.findById(id);
+    public ResponseEntity<ProfileDetailsDTO> getById(@PathVariable Integer id){
+        ProfileDetailsDTO profile = adminProfileService.findById(id);
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<Profile> create(@RequestBody Profile profile){
-        Profile profileCreated = adminProfileService.create(profile);
+    public ResponseEntity<ProfileDetailsDTO> create(@Valid @RequestBody ProfileCreateUpdateDTO profileFromDto){
+        ProfileDetailsDTO profileCreated = adminProfileService.create(profileFromDto);
         return new ResponseEntity<>(profileCreated, HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Profile> update(@PathVariable Integer id,
-                                          @RequestBody Profile profile){
-        Profile updatedProfile = adminProfileService.update(id, profile);
+    public ResponseEntity<ProfileDetailsDTO> update(@PathVariable Integer id,
+                                          @Valid @RequestBody ProfileCreateUpdateDTO profileFromDto){
+        ProfileDetailsDTO updatedProfile = adminProfileService.update(id, profileFromDto);
         return new ResponseEntity<>(updatedProfile, HttpStatus.OK);
     }
 
