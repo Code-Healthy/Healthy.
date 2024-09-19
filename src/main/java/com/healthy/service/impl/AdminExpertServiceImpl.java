@@ -1,7 +1,6 @@
 package com.healthy.service.impl;
 
 import com.healthy.model.entity.Expert;
-import com.healthy.model.entity.HabitType;
 import com.healthy.repository.ExpertRepository;
 import com.healthy.service.AdminExpertService;
 import lombok.RequiredArgsConstructor;

@@ -33,6 +33,4 @@ public class Resource {
     @Column(nullable = false)
     private Float price;
 
-    @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
-    private List<Subscription> subscriptions;
 }

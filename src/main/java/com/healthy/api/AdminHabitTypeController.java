@@ -55,5 +55,5 @@ public class AdminHabitTypeController {
         adminHabitTypeService.delete(id);
         return new ResponseEntity<HabitType>(HttpStatus.NO_CONTENT);
     }
-
+  /*w*/
 }
