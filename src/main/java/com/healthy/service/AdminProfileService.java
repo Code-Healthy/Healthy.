@@ -14,4 +14,5 @@ public interface AdminProfileService {
     ProfileDetailsDTO findById(Integer id);
     ProfileDetailsDTO update(Integer id, ProfileCreateUpdateDTO updateProfileDto);
     void delete(Integer id);
+
 }

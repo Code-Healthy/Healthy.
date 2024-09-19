@@ -27,4 +27,5 @@ public class ProfileMapper {
     public ProfileCreateUpdateDTO toCreateUpdateDTO(Profile profile) {
         return modelMapper.map(profile, ProfileCreateUpdateDTO.class);
     }
+
 }

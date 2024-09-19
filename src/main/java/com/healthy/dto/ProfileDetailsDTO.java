@@ -2,7 +2,6 @@ package com.healthy.dto;
 
 import com.healthy.model.enums.Gender;
 import lombok.Data;
-
 @Data
 public class ProfileDetailsDTO {
     private Integer id;

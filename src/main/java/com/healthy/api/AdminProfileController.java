@@ -1,5 +1,4 @@
 package com.healthy.api;
-
 import com.healthy.dto.ProfileCreateUpdateDTO;
 import com.healthy.dto.ProfileDetailsDTO;
 import com.healthy.model.entity.Profile;

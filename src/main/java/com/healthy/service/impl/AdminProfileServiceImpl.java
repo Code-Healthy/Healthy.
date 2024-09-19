@@ -46,7 +46,6 @@ public class AdminProfileServiceImpl implements AdminProfileService {
 
         Profile profile = profileMapper.toEntity(profileCreateUpdateDTO);
         profile.setUser(user);
-
         return profileMapper.toDetailsDTO(profileRepository.save(profile));
     }
     @Transactional(readOnly = true)
