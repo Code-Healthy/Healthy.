@@ -1,6 +1,8 @@
 package com.healthy.api;
 
 
+import com.healthy.dto.ResourceDTO;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Page;
@@ -20,47 +22,47 @@ public class AdminResourceController {
 
 
     @GetMapping
-    public ResponseEntity<List<Resource>> getAllResources() {
-        List<Resource> resources = adminResourceService.getAll();
-        return new ResponseEntity<List<Resource>>(resources, HttpStatus.OK);
+    public ResponseEntity<List<ResourceDTO>> getAllResources() {
+        List<ResourceDTO> resources = adminResourceService.getAll();
+        return new ResponseEntity<>(resources, HttpStatus.OK);
 
     }
 
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Resource>> paginateResources(
+    public ResponseEntity<Page<ResourceDTO>> paginateResources(
             @PageableDefault (size =5, sort ="title")Pageable pageable) {
-        Page<Resource> resources = adminResourceService.paginate(pageable);
-        return new ResponseEntity<Page<Resource>>(resources, HttpStatus.OK);
+        Page<ResourceDTO> resources = adminResourceService.paginate(pageable);
+        return new ResponseEntity<>(resources, HttpStatus.OK);
 
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Resource> getResourceById(@PathVariable("id") Integer id) {
-        Resource resource = adminResourceService.findById(id);
-        return new ResponseEntity<Resource>(resource,HttpStatus.OK);
+    public ResponseEntity<ResourceDTO> getResourceById(@PathVariable("id") Integer id) {
+        ResourceDTO resource = adminResourceService.findById(id);
+        return new ResponseEntity<>(resource,HttpStatus.OK);
 
     }
 
     @PostMapping
-    public ResponseEntity<Resource> createResource(@RequestBody Resource resource) {
-        Resource newResource = adminResourceService.create(resource);
-        return new ResponseEntity<>(newResource, HttpStatus.CREATED);
+    public ResponseEntity<ResourceDTO> create(@Valid @RequestBody ResourceDTO resourceDTO) {
+        ResourceDTO createdResource = adminResourceService.create(resourceDTO);
+        return new ResponseEntity<>(createdResource, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Resource> updateResource(@PathVariable("id") Integer id,
-                                                   @RequestBody Resource resource) {
-        Resource updateResource = adminResourceService.create(resource);
+    public ResponseEntity<ResourceDTO> updateResource(@PathVariable("id") Integer id,
+                                                   @Valid @RequestBody ResourceDTO resourceDTO) {
+        ResourceDTO updateResource = adminResourceService.update(id, resourceDTO);
         return new ResponseEntity<>(updateResource, HttpStatus.OK);
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Resource> deleteResource(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteResource(@PathVariable Integer id) {
        adminResourceService.delete(id);
-        return new ResponseEntity<Resource>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
