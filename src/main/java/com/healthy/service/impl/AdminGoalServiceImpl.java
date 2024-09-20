@@ -85,7 +85,7 @@ public class AdminGoalServiceImpl implements AdminGoalService {
         Habit habit = habitRepository.findById(updateGoal.getHabitId()).orElseThrow(() -> new RuntimeException("Habit not found"));
         Plan plan = planRepository.findById(updateGoal.getPlanId()).orElseThrow(() -> new RuntimeException("Plan not found"));
 
-        //goal=goalMapper.toEntity(updateGoal);
+        Goal goal=goalMapper.toEntity(updateGoal);
 
         goalFromDb.setEndDate(updateGoal.getEndDate());
         goalFromDb.setGoalStatus(updateGoal.getGoalStatus());
@@ -97,7 +97,7 @@ public class AdminGoalServiceImpl implements AdminGoalService {
         goalFromDb.setUser(user);
         //goalFromDb.setTrackingRecords(updateGoal.getTrackingRecords());
 
-        return goalMapper.toDetailsDTO(goalRepository.save(goalFromDb));
+        return goalMapper.toDetailsDTO(goalRepository.save(goal));
     }
 
     @Transactional(readOnly = true)

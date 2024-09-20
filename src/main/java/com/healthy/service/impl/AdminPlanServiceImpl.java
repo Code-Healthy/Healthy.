@@ -1,12 +1,16 @@
 package com.healthy.service.impl;
 
+import com.healthy.dto.PlanCreateUpdateDTO;
 import com.healthy.dto.PlanDetailsDTO;
 import com.healthy.mapper.PlanMapper;
+import com.healthy.model.entity.Goal;
 import com.healthy.model.entity.Plan;
+import com.healthy.model.entity.User;
 import com.healthy.repository.PlanRepository;
 import com.healthy.repository.UserRepository;
 import com.healthy.service.AdminPlanService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.mbeans.UserMBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,38 +47,45 @@ public class AdminPlanServiceImpl implements AdminPlanService {
     @Transactional(readOnly = true)
     @Override
     public PlanDetailsDTO findById(int id) {
-
-        User user=userRepository.findById(plan)
-
-        return null;
+        Plan plan = planRepository.findById(id).orElseThrow(() -> new RuntimeException("Plan not"));
+        return planMapper.toDetailsDTO(plan);
     }
 
     @Transactional
     @Override
-    public Plan create(Plan plan) {
+    public PlanDetailsDTO create(PlanCreateUpdateDTO planDTO) {
+
+        User user = userRepository.findById(planDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Plan plan = planMapper.toEntity(planDTO);
         plan.setStartDate(LocalDateTime.now());
-        return planRepository.save(plan);
+        plan.setUser(user);
+        return planMapper.toDetailsDTO(planRepository.save(plan));
     }
 
     @Transactional
     @Override
-    public Plan update(Integer id, Plan updatePlan) {
-        Plan planFromDb = findById(id);
+    public PlanDetailsDTO update(Integer id, PlanCreateUpdateDTO updatePlan) {
+
+        Plan planFromDb = planRepository.findById(id).orElseThrow(() -> new RuntimeException("Plan not found"));
+        User user = userRepository.findById(updatePlan.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        Plan plan = planMapper.toEntity(updatePlan);
         planFromDb.setName(updatePlan.getName());
         planFromDb.setDescription(updatePlan.getDescription());
-        planFromDb.setStartDate(updatePlan.getStartDate());
         planFromDb.setEndDate(updatePlan.getEndDate());
         planFromDb.setId(updatePlan.getId());
         planFromDb.setPlanStatus(updatePlan.getPlanStatus());
-        planFromDb.setUser(updatePlan.getUser());
+        planFromDb.setUser(user);
         planFromDb.setGoals(updatePlan.getGoals());
-        return planRepository.save(planFromDb);
+        return planMapper.toDetailsDTO(planRepository.save(plan));
     }
 
     @Transactional
     @Override
     public void delete(Integer id) {
-        Plan plan = findById(id);
+        Plan plan = planRepository.findById(id).orElseThrow(() -> new RuntimeException("Plan not found"));
         planRepository.delete(plan);
     }
 }

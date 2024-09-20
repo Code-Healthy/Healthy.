@@ -1,6 +1,8 @@
 package com.healthy.api;
 
 
+import com.healthy.dto.PlanCreateUpdateDTO;
+import com.healthy.dto.PlanDetailsDTO;
 import com.healthy.model.entity.Plan;
 import com.healthy.service.AdminPlanService;
 import lombok.RequiredArgsConstructor;
@@ -20,36 +22,36 @@ public class AdminPlanController {
     private final AdminPlanService adminPlanService;
 
     @GetMapping
-    public ResponseEntity<List<Plan>> getAllPlans(){
-        List<Plan> plans = adminPlanService.getAll();
-        return new ResponseEntity<List<Plan>>(plans, HttpStatus.OK);
+    public ResponseEntity<List<PlanDetailsDTO>> getAllPlans(){
+        List<PlanDetailsDTO> plans = adminPlanService.getAll();
+        return new ResponseEntity<>(plans, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Plan>> paginatePlans(
+    public ResponseEntity<Page<PlanDetailsDTO>> paginatePlans(
             @PageableDefault(size=10, sort="name") Pageable pageable)
     {
-        Page<Plan> plans = adminPlanService.paginate(pageable);
-        return new ResponseEntity<Page<Plan>>(plans,HttpStatus.OK);
+        Page<PlanDetailsDTO> plans = adminPlanService.paginate(pageable);
+        return new ResponseEntity<>(plans,HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Plan> getPlanById(@PathVariable("id") Integer id){
-        Plan plan = adminPlanService.findById(id);
-        return new ResponseEntity<Plan>(plan,HttpStatus.OK);
+    public ResponseEntity<PlanDetailsDTO> getPlanById(@PathVariable("id") Integer id){
+        PlanDetailsDTO plan = adminPlanService.findById(id);
+        return new ResponseEntity<>(plan,HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Plan> createPlan(@RequestBody Plan plan){
-        Plan newPlan = adminPlanService.create(plan);
-        return new ResponseEntity<Plan>(newPlan,HttpStatus.CREATED);
+    public ResponseEntity<PlanDetailsDTO> createPlan(@RequestBody PlanCreateUpdateDTO plan){
+        PlanDetailsDTO newPlan = adminPlanService.create(plan);
+        return new ResponseEntity<>(newPlan,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Plan> updatePlan(@PathVariable("id") Integer id,
-                                           @RequestBody Plan plan){
-        Plan updatedPlan = adminPlanService.update(id, plan);
-        return new ResponseEntity<Plan>(updatedPlan,HttpStatus.OK);
+    public ResponseEntity<PlanDetailsDTO> updatePlan(@PathVariable("id") Integer id,
+                                           @RequestBody PlanCreateUpdateDTO plan){
+        PlanDetailsDTO updatedPlan = adminPlanService.update(id, plan);
+        return new ResponseEntity<>(updatedPlan,HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
