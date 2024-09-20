@@ -1,7 +1,6 @@
 package com.healthy.api;
 
 import com.healthy.dto.HabitTypeDTO;
-import com.healthy.model.entity.HabitType;
 import com.healthy.service.AdminHabitTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

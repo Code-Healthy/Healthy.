@@ -4,7 +4,6 @@ import com.healthy.dto.HabitTypeDTO;
 import com.healthy.exception.BadRequestException;
 import com.healthy.exception.ResourceNotFoundException;
 import com.healthy.mapper.HabitTypeMapper;
-import com.healthy.model.entity.Habit;
 import com.healthy.model.entity.HabitType;
 import com.healthy.repository.HabitTypeRepository;
 import com.healthy.service.AdminHabitTypeService;

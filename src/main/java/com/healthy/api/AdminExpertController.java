@@ -1,7 +1,6 @@
 package com.healthy.api;
 
 import com.healthy.dto.ExpertDTO;
-import com.healthy.model.entity.Expert;
 import com.healthy.service.AdminExpertService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,7 @@ public class AdminExpertController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ExpertDTO> update(@PathVariable Integer id,
-                                                     @Valid @RequestBody ExpertDTO expertDTO) {
+                                            @Valid @RequestBody ExpertDTO expertDTO) {
         ExpertDTO updatedExpert = adminExpertService.update(id,expertDTO) ;
         return new ResponseEntity<>(updatedExpert, HttpStatus.OK);
     }

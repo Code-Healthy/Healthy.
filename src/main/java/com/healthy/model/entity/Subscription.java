@@ -1,5 +1,6 @@
 package com.healthy.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.healthy.model.enums.PaymentStatus;
 import com.healthy.model.enums.SubscriptionStatus;
 import jakarta.persistence.*;
@@ -16,6 +17,7 @@ public class Subscription {
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subscription_user"))
     private User user;
 
