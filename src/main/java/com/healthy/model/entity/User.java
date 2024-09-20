@@ -26,9 +26,6 @@ public class User {
     @Column(name = "role")
     private Role role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Profile profile;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Goal> goals;
 
@@ -38,4 +35,3 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Subscription> subscriptions;
 }
-

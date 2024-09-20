@@ -1,5 +1,9 @@
 package com.healthy.service.impl;
 
+import com.healthy.dto.HabitTypeDTO;
+import com.healthy.exception.BadRequestException;
+import com.healthy.exception.ResourceNotFoundException;
+import com.healthy.mapper.HabitTypeMapper;
 import com.healthy.model.entity.HabitType;
 import com.healthy.repository.HabitTypeRepository;
 import com.healthy.service.AdminHabitTypeService;
@@ -17,47 +21,70 @@ import java.util.List;
 public class AdminHabitTypeServiceImpl implements AdminHabitTypeService {
 
     private final HabitTypeRepository habitTypeRepository;
+    private final HabitTypeMapper habitTypeMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<HabitType> getAll() {
-        return habitTypeRepository.findAll();
+    public List<HabitTypeDTO> getAll() {
+        List<HabitType> habitTypes = habitTypeRepository.findAll();
+        return habitTypes.stream()
+                .map(habitTypeMapper::toDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<HabitType> paginate(Pageable pageable) {
-        return habitTypeRepository.findAll(pageable);
+    public Page<HabitTypeDTO> paginate(Pageable pageable) {
+        Page<HabitType> habitTypes = habitTypeRepository.findAll(pageable);
+        return habitTypes.map(habitTypeMapper::toDTO);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public HabitType findById(Integer id) {
-        return habitTypeRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Type not found"));
+    public HabitTypeDTO findById(Integer id) {
+        HabitType habitType = habitTypeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("La categoria con ID " + id + " no fue encontrada"));
+        return habitTypeMapper.toDTO(habitType);
     }
 
     @Transactional
     @Override
-    public HabitType create(HabitType habitType) {
+    public HabitTypeDTO create(HabitTypeDTO habitTypeDTO) {
+        habitTypeRepository.findByName(habitTypeDTO.getName())
+                .ifPresent(existingHabitType -> {
+                    throw new BadRequestException("El tipo de habito ya existe con el mismo nombre");
+                });
+        HabitType habitType = habitTypeMapper.toEntity(habitTypeDTO);
         habitType.setCreatedAt(LocalDateTime.now());
-        return habitTypeRepository.save(habitType);
+        habitType = habitTypeRepository.save(habitType);
+        return habitTypeMapper.toDTO(habitType);
     }
 
     @Transactional
     @Override
-    public HabitType update(Integer id, HabitType updateHabitType) {
-        HabitType habitTypeFromDb = findById(id);
-        habitTypeFromDb.setName(updateHabitType.getName());
-        habitTypeFromDb.setDescription(updateHabitType.getDescription());
+    public HabitTypeDTO update(Integer id, HabitTypeDTO updateHabitTypeDTO) {
+        HabitType habitTypeFromDb = habitTypeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El tipo de habito con ID " + id + " no fue encontrada"));
+
+        habitTypeRepository.findByName(updateHabitTypeDTO.getName())
+                .filter(existingHabitType -> !existingHabitType.getId().equals(id))
+                .ifPresent(existingHabitType -> {
+                    throw new BadRequestException("El tipo de habito ya existe con el mismo nombre");
+                });
+
+        habitTypeFromDb.setName(updateHabitTypeDTO.getName());
+        habitTypeFromDb.setDescription(updateHabitTypeDTO.getDescription());
         habitTypeFromDb.setUpdatedAt(LocalDateTime.now());
-        return habitTypeRepository.save(habitTypeFromDb);
+
+        habitTypeFromDb = habitTypeRepository.save(habitTypeFromDb);
+        return habitTypeMapper.toDTO(habitTypeFromDb);
     }
 
     @Transactional
     @Override
     public void delete(Integer id) {
-        HabitType habitType = findById(id);
-        habitTypeRepository.deleteById(id);
+        HabitType habitType = habitTypeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El tipo de habito con ID " + id + " no fue encontrada"));
+        habitTypeRepository.delete(habitType);
     }
 }

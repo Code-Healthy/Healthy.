@@ -1,7 +1,8 @@
 package com.healthy.api;
 
-import com.healthy.model.entity.Expert;
+import com.healthy.dto.ExpertDTO;
 import com.healthy.service.AdminExpertService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,34 +20,34 @@ public class AdminExpertController {
     private final AdminExpertService adminExpertService;
 
     @GetMapping
-    public ResponseEntity<List<Expert>> listAll() {
-        List<Expert> experts = adminExpertService.getAll();
+    public ResponseEntity<List<ExpertDTO>> listAll() {
+        List<ExpertDTO> experts = adminExpertService.getAll();
         return new ResponseEntity<>(experts, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Expert>> paginate(
+    public ResponseEntity<Page<ExpertDTO>> paginate(
             @PageableDefault(size = 5, sort = "firstName")Pageable pageable) {
-        Page<Expert> page = adminExpertService.paginate(pageable);
+        Page<ExpertDTO> page = adminExpertService.paginate(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Expert> getById(@PathVariable Integer id) {
-        Expert expert = adminExpertService.findById(id);
+    public ResponseEntity<ExpertDTO> getById(@PathVariable Integer id) {
+        ExpertDTO expert = adminExpertService.findById(id);
         return new ResponseEntity<>(expert, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Expert> create(@RequestBody Expert expert) {
-        Expert createdExpert = adminExpertService.create(expert);
+    public ResponseEntity<ExpertDTO> create(@Valid @RequestBody ExpertDTO expertDTO) {
+        ExpertDTO createdExpert = adminExpertService.create(expertDTO);
         return new ResponseEntity<>(createdExpert, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Expert> update(@PathVariable Integer id,
-                                                     @RequestBody Expert expert) {
-        Expert updatedExpert = adminExpertService.update(id,expert);
+    public ResponseEntity<ExpertDTO> update(@PathVariable Integer id,
+                                            @Valid @RequestBody ExpertDTO expertDTO) {
+        ExpertDTO updatedExpert = adminExpertService.update(id,expertDTO) ;
         return new ResponseEntity<>(updatedExpert, HttpStatus.OK);
     }
 

@@ -1,7 +1,8 @@
 package com.healthy.api;
 
-import com.healthy.model.entity.HabitType;
+import com.healthy.dto.HabitTypeDTO;
 import com.healthy.service.AdminHabitTypeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,41 +20,41 @@ public class AdminHabitTypeController {
     private final AdminHabitTypeService adminHabitTypeService;
 
     @GetMapping
-    public ResponseEntity<List<HabitType>> getAllHabitTypes() {
-        List<HabitType> habitTypes = adminHabitTypeService.getAll();
-        return new ResponseEntity<List<HabitType>>(habitTypes, HttpStatus.OK);
+    public ResponseEntity<List<HabitTypeDTO>> getAllHabitTypes() {
+        List<HabitTypeDTO> habitTypes = adminHabitTypeService.getAll();
+        return new ResponseEntity<>(habitTypes, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<HabitType>> paginateHabitTypes(
+    public ResponseEntity<Page<HabitTypeDTO>> paginateHabitTypes(
             @PageableDefault(size = 5, sort = "name")Pageable pageable) {
-        Page<HabitType> habitTypes = adminHabitTypeService.paginate(pageable);
-        return new ResponseEntity<Page<HabitType>>(habitTypes, HttpStatus.OK);
+        Page<HabitTypeDTO> habitTypes = adminHabitTypeService.paginate(pageable);
+        return new ResponseEntity<>(habitTypes, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HabitType> getHabitTypeById(@PathVariable("id") Integer id) {
-        HabitType habitType = adminHabitTypeService.findById(id);
-        return new ResponseEntity<HabitType>(habitType, HttpStatus.OK);
+    public ResponseEntity<HabitTypeDTO> getHabitTypeById(@PathVariable("id") Integer id) {
+        HabitTypeDTO habitType = adminHabitTypeService.findById(id);
+        return new ResponseEntity<>(habitType, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<HabitType> createHabitType(@RequestBody HabitType habitType) {
-        HabitType newHabitType = adminHabitTypeService.create(habitType);
-        return new ResponseEntity<HabitType>(newHabitType, HttpStatus.CREATED);
+    public ResponseEntity<HabitTypeDTO> createHabitType(@Valid @RequestBody HabitTypeDTO habitTypeDTO) {
+        HabitTypeDTO newHabitType = adminHabitTypeService.create(habitTypeDTO);
+        return new ResponseEntity<>(newHabitType, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HabitType> updateHabitType(@PathVariable("id") Integer id,
-                                                     @RequestBody HabitType habitType) {
-        HabitType updatedHabitType = adminHabitTypeService.update(id,habitType);
-        return new ResponseEntity<HabitType>(updatedHabitType, HttpStatus.OK);
+    public ResponseEntity<HabitTypeDTO> updateHabitType(@PathVariable("id") Integer id,
+                                                     @Valid @RequestBody HabitTypeDTO habitTypeDTO) {
+        HabitTypeDTO updatedHabitType = adminHabitTypeService.update(id, habitTypeDTO);
+        return new ResponseEntity<>(updatedHabitType, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HabitType> deleteHabitType(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteHabitType(@PathVariable("id") Integer id) {
         adminHabitTypeService.delete(id);
-        return new ResponseEntity<HabitType>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
   /*w*/
 }

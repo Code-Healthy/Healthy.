@@ -1,16 +1,16 @@
 package com.healthy.service;
 
-import com.healthy.model.entity.HabitType;
+import com.healthy.dto.HabitTypeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface AdminHabitTypeService {
-    List<HabitType> getAll();
-    Page<HabitType> paginate(Pageable pageable);
-    HabitType findById(Integer id);
-    HabitType create(HabitType habitType);
-    HabitType update(Integer id, HabitType updateHabitType);
+    List<HabitTypeDTO> getAll();
+    Page<HabitTypeDTO> paginate(Pageable pageable);
+    HabitTypeDTO findById(Integer id);
+    HabitTypeDTO create(HabitTypeDTO habitTypeDTO);
+    HabitTypeDTO update(Integer id, HabitTypeDTO updateHabitTypeDTO);
     void delete(Integer id);
 }
