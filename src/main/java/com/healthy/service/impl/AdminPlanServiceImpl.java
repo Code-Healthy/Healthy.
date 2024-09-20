@@ -1,7 +1,10 @@
 package com.healthy.service.impl;
 
+import com.healthy.dto.PlanDetailsDTO;
+import com.healthy.mapper.PlanMapper;
 import com.healthy.model.entity.Plan;
 import com.healthy.repository.PlanRepository;
+import com.healthy.repository.UserRepository;
 import com.healthy.service.AdminPlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,23 +20,33 @@ import java.util.List;
 public class AdminPlanServiceImpl implements AdminPlanService {
 
     private final PlanRepository planRepository;
+    private final PlanMapper planMapper;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     @Override
-    public List<Plan> getAll() {
-        return planRepository.findAll();
+    public List<PlanDetailsDTO> getAll() {
+        List<Plan> plans = planRepository.findAll();
+
+        return plans.stream()
+                .map(planMapper::toDetailsDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Plan> paginate(Pageable pageable) {
-        return planRepository.findAll(pageable);
+    public Page<PlanDetailsDTO> paginate(Pageable pageable) {
+        return planRepository.findAll(pageable)
+                .map(planMapper::toDetailsDTO);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Plan findById(int id) {
-        return planRepository.findById(id).orElseThrow(() -> new RuntimeException("Plan not found"));
+    public PlanDetailsDTO findById(int id) {
+
+        User user=userRepository.findById(plan)
+
+        return null;
     }
 
     @Transactional
