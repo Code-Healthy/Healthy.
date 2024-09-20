@@ -1,15 +1,17 @@
 package com.healthy.service;
 
+import com.healthy.dto.TrackingRecordCreateUpdateDTO;
+import com.healthy.dto.TrackingRecordDetailsDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.healthy.model.entity.TrackingRecord;
 import java.util.List;
 
 public interface AdminTrackingRecordService {
-    List<TrackingRecord> getAll();
-    Page<TrackingRecord> paginate(Pageable pageable);
-    TrackingRecord findById(int id);
-    TrackingRecord create(TrackingRecord trackingrecord);
-    TrackingRecord update(Integer id, TrackingRecord updateTrackingRecord);
+    List<TrackingRecordDetailsDTO> getAll();
+    Page<TrackingRecordDetailsDTO> paginate(Pageable pageable);
+    TrackingRecordDetailsDTO findById(int id);
+    TrackingRecordDetailsDTO create(TrackingRecordCreateUpdateDTO trackingRecordCreateUpdateDTO);
+    TrackingRecordDetailsDTO update(Integer id, TrackingRecordCreateUpdateDTO updateTrackingRecordDTO);
     void delete(Integer id);
 }
