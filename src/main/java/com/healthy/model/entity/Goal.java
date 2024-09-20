@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,6 +18,10 @@ public class Goal {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subscription_user"))
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "plan_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_plan"))
+    private Plan plan;
 
     @ManyToOne
     @JoinColumn(name = "habit_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subscription_habit"))
@@ -37,4 +42,7 @@ public class Goal {
     @Enumerated(EnumType.STRING)
     @Column(name = "goal_status")
     private GoalStatus goalStatus;
+
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)
+    private List<TrackingRecord> trackingRecords;
 }

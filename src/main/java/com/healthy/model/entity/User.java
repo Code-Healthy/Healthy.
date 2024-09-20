@@ -4,6 +4,8 @@ import com.healthy.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "users")
@@ -24,4 +26,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Goal> goals;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Plan> plans;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Subscription> subscriptions;
 }

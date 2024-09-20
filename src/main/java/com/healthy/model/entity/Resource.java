@@ -28,7 +28,4 @@ public class Resource {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
-
-    /*@Column(nullable = false)
-    private Float price;*/
 }

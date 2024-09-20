@@ -34,7 +34,7 @@ public class AdminSubscriptionServiceImpl implements AdminSubscriptionService {
         return subscriptionRepository.findById(id).orElse(null);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public Subscription create(Subscription subscription) {
         return subscriptionRepository.save(subscription);
