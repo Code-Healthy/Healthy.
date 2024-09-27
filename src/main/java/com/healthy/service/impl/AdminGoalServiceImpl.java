@@ -3,6 +3,7 @@ package com.healthy.service.impl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.healthy.dto.GoalCreateUpdateDTO;
 import com.healthy.dto.GoalDetailsDTO;
+import com.healthy.exception.ResourceNotFoundException;
 import com.healthy.mapper.GoalMapper;
 import com.healthy.model.entity.Goal;
 import com.healthy.model.entity.Habit;
@@ -21,11 +22,6 @@ import com.healthy.repository.HabitRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
-
 
 @RequiredArgsConstructor
 @Service
@@ -59,19 +55,19 @@ public class AdminGoalServiceImpl implements AdminGoalService {
     @Transactional
     @Override
     public GoalDetailsDTO create(GoalCreateUpdateDTO goalCreateUpdateDTO) {
-                User user = userRepository.findById(goalCreateUpdateDTO.getUserId())
-                        .orElseThrow(() -> new RuntimeException("User not found"));
-                Habit habit = habitRepository.findById(goalCreateUpdateDTO.getHabitId()).
-                        orElseThrow(() -> new RuntimeException("Habit not found"));
-                Plan plan =planRepository.findById(goalCreateUpdateDTO.getPlanId()).
-                        orElseThrow(() -> new RuntimeException("Plan not found"));
+        User user = userRepository.findById(goalCreateUpdateDTO.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User "+goalCreateUpdateDTO.getUserId()+" not found"));
+        Habit habit = habitRepository.findById(goalCreateUpdateDTO.getHabitId()).
+                orElseThrow(() -> new ResourceNotFoundException("Habit "+goalCreateUpdateDTO.getHabitId()+" not found"));
+        Plan plan =planRepository.findById(goalCreateUpdateDTO.getPlanId()).
+                orElseThrow(() -> new ResourceNotFoundException("Plan "+goalCreateUpdateDTO.getPlanId()+" not found"));
 
-                Goal goal = goalMapper.toEntity(goalCreateUpdateDTO);
+        Goal goal = goalMapper.toEntity(goalCreateUpdateDTO);
 
-                goal.setStartDate(LocalDateTime.now());
-                goal.setUser(user);
-                goal.setHabit(habit);
-                goal.setPlan(plan);
+        goal.setStartDate(LocalDateTime.now());
+        goal.setUser(user);
+        goal.setHabit(habit);
+        goal.setPlan(plan);
         return goalMapper.toDetailsDTO(goalRepository.save(goal));
     }
 
@@ -79,39 +75,38 @@ public class AdminGoalServiceImpl implements AdminGoalService {
     @Override
     public GoalDetailsDTO update(Integer id, GoalCreateUpdateDTO updateGoal) {
 
-        Goal goalFromDb = goalRepository.findById(id).orElseThrow(() -> new RuntimeException("Goal not found"));
+        Goal goalFromDb = goalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Goal "+id+" not found"));
 
-        User user = userRepository.findById(updateGoal.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-        Habit habit = habitRepository.findById(updateGoal.getHabitId()).orElseThrow(() -> new RuntimeException("Habit not found"));
-        Plan plan = planRepository.findById(updateGoal.getPlanId()).orElseThrow(() -> new RuntimeException("Plan not found"));
+        User user = userRepository.findById(updateGoal.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User "+updateGoal.getUserId()+" not found"));
+        Habit habit = habitRepository.findById(updateGoal.getHabitId()).orElseThrow(() -> new ResourceNotFoundException("Habit "+updateGoal.getHabitId()+" not found"));
+        Plan plan = planRepository.findById(updateGoal.getPlanId()).orElseThrow(() -> new ResourceNotFoundException("Plan "+updateGoal.getPlanId()+" not found"));
 
         Goal goal=goalMapper.toEntity(updateGoal);
 
+        goal.setStartDate(goalFromDb.getStartDate());
         goalFromDb.setEndDate(updateGoal.getEndDate());
         goalFromDb.setGoalStatus(updateGoal.getGoalStatus());
         goalFromDb.setTargetValue(updateGoal.getTargetValue());
         goalFromDb.setCurrentValue(updateGoal.getCurrentValue());
         goalFromDb.setHabit(habit);
         goalFromDb.setPlan(plan);
-        goalFromDb.setId(updateGoal.getId());
         goalFromDb.setUser(user);
-        //goalFromDb.setTrackingRecords(updateGoal.getTrackingRecords());
 
-        return goalMapper.toDetailsDTO(goalRepository.save(goal));
+        return goalMapper.toDetailsDTO(goalRepository.save(goalFromDb));
     }
 
     @Transactional(readOnly = true)
     @Override
     public GoalDetailsDTO findById(int id) {
 
-        Goal goal = goalRepository.findById(id).orElseThrow(() -> new RuntimeException("Goal not found"));
+        Goal goal = goalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Goal "+id+" not found"));
         return goalMapper.toDetailsDTO(goal);
     }
 
     @Transactional
     @Override
     public void delete(Integer id) {
-        Goal goal = goalRepository.findById(id).orElseThrow(() -> new RuntimeException("Goal not found"));
+        Goal goal = goalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Goal "+id+" not found"));
         goalRepository.delete(goal);
     }
 }

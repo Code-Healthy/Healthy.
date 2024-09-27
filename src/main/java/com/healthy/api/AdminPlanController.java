@@ -49,7 +49,7 @@ public class AdminPlanController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PlanDetailsDTO> updatePlan(@PathVariable("id") Integer id,
-                                           @RequestBody PlanCreateUpdateDTO plan){
+                                                     @RequestBody PlanCreateUpdateDTO plan){
         PlanDetailsDTO updatedPlan = adminPlanService.update(id, plan);
         return new ResponseEntity<>(updatedPlan,HttpStatus.OK);
     }

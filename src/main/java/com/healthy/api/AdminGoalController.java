@@ -52,7 +52,7 @@ public class AdminGoalController {
 
     @PutMapping("/{id}")
     public ResponseEntity<GoalDetailsDTO> updateGoal( @Valid @PathVariable("id") Integer id,
-                                            @RequestBody GoalCreateUpdateDTO goal){
+                                                      @RequestBody GoalCreateUpdateDTO goal){
         GoalDetailsDTO updatedGoal = adminGoalService.update(id, goal);
         return new ResponseEntity<>(updatedGoal,HttpStatus.OK);
     }

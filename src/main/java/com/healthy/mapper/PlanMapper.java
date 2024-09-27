@@ -2,7 +2,6 @@ package com.healthy.mapper;
 
 import com.healthy.dto.PlanCreateUpdateDTO;
 import com.healthy.dto.PlanDetailsDTO;
-import com.healthy.model.entity.Goal;
 import com.healthy.model.entity.Plan;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -28,7 +27,7 @@ public class PlanMapper {
         return modelMapper.map(dto, Plan.class);
     }
 
-   public PlanCreateUpdateDTO toPlanCreateUpdateDTO(Plan plan) {
+    public PlanCreateUpdateDTO toPlanCreateUpdateDTO(Plan plan) {
         return modelMapper.map(plan, PlanCreateUpdateDTO.class);
-   }
+    }
 }

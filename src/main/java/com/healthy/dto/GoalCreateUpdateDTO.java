@@ -15,31 +15,28 @@ import java.util.List;
 public class GoalCreateUpdateDTO {
     private Integer id;
 
-    @NotBlank(message = "El valor objetivo es obligatorio")
+    //@NotBlank(message = "El valor objetivo es obligatorio")
     @Positive(message = "El valor debe ser positivo")
     private Float targetValue;
 
-    @NotBlank(message = "El valor actual es obligatorio")
+    //@NotBlank(message = "El valor actual es obligatorio")
     @Positive(message = "El valor debe ser positivo")
     private Float currentValue;
 
-    @NotBlank(message = "La fecha de término es obligatoria")
+    //@NotBlank(message = "La fecha de término es obligatoria")
     private LocalDateTime endDate;
 
-    @NotBlank(message = "La fecha de inicio es obligatoria")
-    private LocalDateTime startDate;
-
-    @NotBlank(message = "El estado de la meta es obligatorio")
+    //@NotBlank(message = "El estado de la meta es obligatorio")
     private GoalStatus goalStatus;
 
     private List<TrackingRecordCreateUpdateDTO> items;
 
-    @NotNull(message = "El usuario es obligatorio")
+    //@NotNull(message = "El usuario es obligatorio")
     private Integer userId;
 
-    @NotNull(message = "El plan es obligatorio")
+    //@NotNull(message = "El plan es obligatorio")
     private Integer planId;
 
-    @NotNull(message = "El hábito es obligatorio")
+    //@NotNull(message = "El hábito es obligatorio")
     private Integer habitId;
 }
