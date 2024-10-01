@@ -28,7 +28,7 @@ public class TrackingRecordMapper {
         trackingRecordDetails.setCurrentValue(trackingRecord.getGoal().getCurrentValue());
         trackingRecordDetails.setGoalStatus(trackingRecord.getGoal().getGoalStatus());
 
-       //PARA HABIT
+        //PARA HABIT
         trackingRecordDetails.setHabitName(trackingRecord.getGoal().getHabit().getName());
         trackingRecordDetails.setHabitDescription(trackingRecord.getGoal().getHabit().getDescription());
         trackingRecordDetails.setHabitFrequency(trackingRecord.getGoal().getHabit().getFrequency());

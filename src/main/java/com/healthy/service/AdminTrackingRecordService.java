@@ -4,7 +4,6 @@ import com.healthy.dto.TrackingRecordCreateUpdateDTO;
 import com.healthy.dto.TrackingRecordDetailsDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import com.healthy.model.entity.TrackingRecord;
 import java.util.List;
 
 public interface AdminTrackingRecordService {

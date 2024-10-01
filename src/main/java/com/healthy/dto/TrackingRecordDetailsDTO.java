@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class TrackingRecordDetailsDTO {
-    //DATOS DE LA MISMA CLASE
+   //DATOS DE LA MISMA CLASE
     private Integer id;
     private Float value;
     private LocalDateTime date;

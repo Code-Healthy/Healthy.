@@ -9,9 +9,9 @@ import com.healthy.model.entity.TrackingRecord;
 import com.healthy.model.entity.User;
 import com.healthy.repository.TrackingRecordRepository;
 import com.healthy.repository.UserRepository;
-import com.healthy.repository.GoalsRepository;
 import com.healthy.repository.HabitRepository;
 import com.healthy.repository.HabitTypeRepository;
+import com.healthy.repository.GoalRepository;
 
 
 import com.healthy.service.AdminTrackingRecordService;
@@ -30,7 +30,7 @@ public class AdminTrackingRecordServiceImpl implements AdminTrackingRecordServic
 
     private final TrackingRecordRepository trackingRecordRepository;
     private final UserRepository userRepository;
-    private final GoalsRepository goalsRepository;
+    private final GoalRepository goalRepository;
     private final HabitRepository habitRepository;
     private final HabitTypeRepository habitTypeRepository;
     private final TrackingRecordMapper trackingRecordMapper;
@@ -64,7 +64,7 @@ public class AdminTrackingRecordServiceImpl implements AdminTrackingRecordServic
     public TrackingRecordDetailsDTO create(TrackingRecordCreateUpdateDTO trackingRecordCreateUpdateDTO) {
         User user = userRepository.findById(trackingRecordCreateUpdateDTO.getUser_id())
                 .orElseThrow(() -> new RuntimeException("User not found with id: "+trackingRecordCreateUpdateDTO.getUser_id()));
-        Goal goal = goalsRepository.findById(trackingRecordCreateUpdateDTO.getGoal_id())
+        Goal goal = goalRepository.findById(trackingRecordCreateUpdateDTO.getGoal_id())
                 .orElseThrow(() -> new RuntimeException("Goal not found with id: "+trackingRecordCreateUpdateDTO.getGoal_id()));
 
         TrackingRecord trackingRecord = trackingRecordMapper.toEntity(trackingRecordCreateUpdateDTO);
@@ -83,7 +83,7 @@ public class AdminTrackingRecordServiceImpl implements AdminTrackingRecordServic
 
         User user = userRepository.findById(updateTrackingRecord.getUser_id())
                 .orElseThrow(() -> new RuntimeException("User not found with id: "+updateTrackingRecord.getUser_id()));
-        Goal goal = goalsRepository.findById(updateTrackingRecord.getGoal_id())
+        Goal goal = goalRepository.findById(updateTrackingRecord.getGoal_id())
                 .orElseThrow(() -> new RuntimeException("Goal not found with id: "+updateTrackingRecord.getGoal_id()));
 
         trackingRecordFromDb.setUser(user);
@@ -97,8 +97,8 @@ public class AdminTrackingRecordServiceImpl implements AdminTrackingRecordServic
     @Transactional
     @Override
     public void delete(Integer id) {
-    TrackingRecord trackingrecord = trackingRecordRepository.findById(id)
-            .orElseThrow(()->new RuntimeException("No record found with id " + id));
-    trackingRecordRepository.delete(trackingrecord);
+        TrackingRecord trackingrecord = trackingRecordRepository.findById(id)
+                .orElseThrow(()->new RuntimeException("No record found with id " + id));
+        trackingRecordRepository.delete(trackingrecord);
     }
 }

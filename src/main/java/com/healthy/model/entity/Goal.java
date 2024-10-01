@@ -1,10 +1,11 @@
 package com.healthy.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.healthy.model.enums.GoalStatus;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -14,13 +15,18 @@ public class Goal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subscription_user"))
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_user"))
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "habit_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subscription_habit"))
+    @JoinColumn(name = "habit_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_habit"))
     private Habit habit;
+
+    @ManyToOne
+    @JoinColumn(name = "plan_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_plan"))
+    private Plan plan;
 
     @Column(name = "target_value")
     private Float targetValue;
@@ -37,4 +43,8 @@ public class Goal {
     @Enumerated(EnumType.STRING)
     @Column(name = "goal_status")
     private GoalStatus goalStatus;
+
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)
+    private List<TrackingRecord> trackingRecords;
+
 }
