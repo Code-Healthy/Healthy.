@@ -10,7 +10,6 @@ public class ResourceCreateUpdateDTO {
     private  String description;
     private ResourceType resourceType;
     private String content;
-    private float price;
     private Integer idExpert;
 
 }

@@ -1,5 +1,6 @@
 package com.healthy.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.healthy.model.enums.PlanStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,6 +15,7 @@ public class Plan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_plan_user"))
     private User user;
@@ -34,6 +36,7 @@ public class Plan {
     @Column(name = "plan_status", nullable = false)
     private PlanStatus planStatus;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
     private List<Goal> goals;
 }

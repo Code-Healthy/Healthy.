@@ -2,6 +2,8 @@ package com.healthy.service.impl;
 
 import com.healthy.dto.ResourceCreateUpdateDTO;
 import com.healthy.dto.ResourceDTO;
+import com.healthy.exception.BadRequestException;
+import com.healthy.exception.ResourceNotFoundException;
 import com.healthy.mapper.ResourceMapper;
 import com.healthy.model.entity.Expert;
 import com.healthy.model.entity.Resource;
@@ -9,14 +11,11 @@ import com.healthy.repository.ExpertRepository;
 import com.healthy.repository.ResourceRepository;
 import com.healthy.service.AdminResourceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -41,10 +40,10 @@ public class AdminResourceServiceImpl implements AdminResourceService {
     @Override
     public ResourceDTO create(ResourceCreateUpdateDTO resourceDTO) {
         Expert expert = expertRepository.findById(resourceDTO.getIdExpert())
-                .orElseThrow(()->new RuntimeException("Expert not found white Id: "+resourceDTO.getIdExpert()));
+                .orElseThrow(()->new BadRequestException("Expert not found white Id: "+resourceDTO.getIdExpert()));
 
-            Resource resource = resourceMapper.toEntity(resourceDTO);
-            resource.setExpert(expert);
+        Resource resource = resourceMapper.toEntity(resourceDTO);
+        resource.setExpert(expert);
         return resourceMapper.toDTO(resourceRepository.save(resource));
     }
 
@@ -52,7 +51,7 @@ public class AdminResourceServiceImpl implements AdminResourceService {
     @Transactional(readOnly = true)
     @Override
     public ResourceDTO findById(Integer id) {
-        Resource resource = resourceRepository.findById(id).orElseThrow(()->new RuntimeException("Resource not found white Id "));
+        Resource resource = resourceRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("El recurso no fue encontrado "));
         return resourceMapper.toDTO(resource);
     }
 
@@ -65,15 +64,13 @@ public class AdminResourceServiceImpl implements AdminResourceService {
         resourceRepository.findByTitle(updateResourceDTO.getTitle())
                 .filter(existingResource -> !existingResource.getTitle().equals(updateResourceDTO.getTitle()))
                 .ifPresent(existingResource -> {
-                    throw new RuntimeException("El recurso ya existe");
+                    throw new BadRequestException("El recurso ya existe");
                 });
-
 
         resourceFromDb.setTitle(updateResourceDTO.getTitle());
         resourceFromDb.setDescription(updateResourceDTO.getDescription());
         resourceFromDb.setResourceType(updateResourceDTO.getResourceType());
         resourceFromDb.setContent(updateResourceDTO.getContent());
-        resourceFromDb.setPrice(updateResourceDTO.getPrice());
         resourceFromDb.setExpert(expert);
 
         resourceFromDb = resourceRepository.save(resourceFromDb);
@@ -83,7 +80,7 @@ public class AdminResourceServiceImpl implements AdminResourceService {
     @Transactional
     @Override
     public void delete(Integer id) {
-        Resource resource = resourceRepository.findById(id).orElseThrow(null);
+        Resource resource = resourceRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("El recurso no fue encontrado "));
         resourceRepository.delete(resource);
     }
 }
