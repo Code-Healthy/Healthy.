@@ -56,6 +56,6 @@ public class AdminTrackingRecordController {
     @DeleteMapping("/{id}")
     public ResponseEntity<TrackingRecord> deletePlan(@PathVariable("id") Integer id){
         adminTrackingRecordService.delete(id);
-        return new ResponseEntity<TrackingRecord>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

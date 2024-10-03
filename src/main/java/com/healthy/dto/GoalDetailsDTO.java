@@ -13,8 +13,9 @@ public class GoalDetailsDTO {
     private Float targetValue;
     private Float currentValue;
     private LocalDateTime endDate;
+    private LocalDateTime startDate;
     private GoalStatus goalStatus;
-    private String userName;
+    private String profileName;
     private String habitName;
     private String planName;
     private List<TrackingRecordDetailsDTO> items;

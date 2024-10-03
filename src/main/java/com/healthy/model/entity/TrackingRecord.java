@@ -14,11 +14,6 @@ public class TrackingRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name ="FK_tracking_record_user"))
-    private User user;
-
     @Column(name = "date")
     private LocalDateTime date;
 

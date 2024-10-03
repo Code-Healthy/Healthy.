@@ -26,9 +26,6 @@ public class TrackingRecordCreateUpdateDTO {
 
     private LocalDateTime date;
 
-    @NotNull(message = "El id del usuario es obligatorio")
-    private Integer user_id;
-
     @NotNull(message = "El id del objetivo es obligatorio")
     private Integer goal_id;
 

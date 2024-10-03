@@ -16,11 +16,9 @@ public class ProfileMapper {
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
     public ProfileDetailsDTO toDetailsDTO(Profile profile) {
-        ProfileDetailsDTO profileDetailsDTO = modelMapper.map(profile, ProfileDetailsDTO.class);
-        profileDetailsDTO.setUserName(profile.getUser().getUsername());
-        return profileDetailsDTO;
-
+        return modelMapper.map(profile, ProfileDetailsDTO.class);
     }
+
     public Profile toEntity(ProfileCreateUpdateDTO profileCreateUpdateDTO) {
         return modelMapper.map(profileCreateUpdateDTO, Profile.class);
     }

@@ -1,8 +1,9 @@
 package com.healthy.model.entity;
 
-import com.healthy.model.enums.ResourceType;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import com.healthy.model.enums.ResourceType;
 
 @Data
 @Entity
@@ -16,17 +17,23 @@ public class Resource {
     @JoinColumn(name = "expert_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_resource_expert"))
     private Expert expert;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "sub_plan_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_resource_sub_plan"))
+    private SubPlan subPlan;
+
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "description")
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "resource_type")
+    @Column(name = "resource_type", nullable = false)
     private ResourceType resourceType;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
     private String content;
 
 }
+
+

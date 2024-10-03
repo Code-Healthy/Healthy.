@@ -20,9 +20,6 @@ public class TrackingRecordMapper {
     public TrackingRecordDetailsDTO toDetailsDTO(TrackingRecord trackingRecord) {
         TrackingRecordDetailsDTO trackingRecordDetails = modelMapper.map(trackingRecord, TrackingRecordDetailsDTO.class);
 
-        //PARA USER
-        trackingRecordDetails.setUsername(trackingRecord.getUser().getUsername());
-
         //PARA GOALS
         trackingRecordDetails.setTargetValue(trackingRecord.getGoal().getTargetValue());
         trackingRecordDetails.setCurrentValue(trackingRecord.getGoal().getCurrentValue());

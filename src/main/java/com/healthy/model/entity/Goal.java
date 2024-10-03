@@ -15,10 +15,9 @@ public class Goal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_user"))
-    private User user;
+    @JoinColumn(name = "profile_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_profile"))
+    private Profile profile;
 
     @ManyToOne
     @JoinColumn(name = "habit_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_habit"))
@@ -44,6 +43,4 @@ public class Goal {
     @Column(name = "goal_status")
     private GoalStatus goalStatus;
 
-    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)
-    private List<TrackingRecord> trackingRecords;
 }

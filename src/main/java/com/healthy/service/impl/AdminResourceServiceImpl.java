@@ -1,12 +1,15 @@
 package com.healthy.service.impl;
 
 import com.healthy.dto.ResourceCreateUpdateDTO;
-import com.healthy.dto.ResourceDTO;
+import com.healthy.dto.ResourceDetailsDTO;
+import com.healthy.exception.ResourceNotFoundException;
 import com.healthy.mapper.ResourceMapper;
 import com.healthy.model.entity.Expert;
 import com.healthy.model.entity.Resource;
+import com.healthy.model.entity.SubPlan;
 import com.healthy.repository.ExpertRepository;
 import com.healthy.repository.ResourceRepository;
+import com.healthy.repository.SubPlanRepository;
 import com.healthy.service.AdminResourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,67 +21,78 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class AdminResourceServiceImpl implements AdminResourceService {
-    private final ResourceRepository resourceRepository;
+
     private final ResourceMapper resourceMapper;
+    private final ResourceRepository resourceRepository;
     private final ExpertRepository expertRepository;
-    @Transactional(readOnly = true)
+    private final SubPlanRepository subPlanRepository;
 
+    @Transactional(readOnly = true)
     @Override
-    public List<ResourceDTO> getAll() {
+    public List<ResourceDetailsDTO> getAll() {
         List<Resource> resources = resourceRepository.findAll();
-        return resources.stream().map(resourceMapper::toDTO).toList();
+        return resources.stream()
+                .map(resourceMapper::toDetailsDTO)
+                .toList();
     }
-    @Transactional(readOnly = true)
+
     @Override
-    public Page<ResourceDTO> paginate(Pageable pageable) {
-        return resourceRepository.findAll(pageable).map(resourceMapper::toDTO);
+    public Page<ResourceDetailsDTO> paginate(Pageable pageable) {
+        return resourceRepository.findAll(pageable)
+                .map(resourceMapper::toDetailsDTO);
+    }
+
+    @Override
+    public ResourceDetailsDTO findById(Integer id) {
+        Resource resource = resourceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Recurso no encontrado"));
+        return resourceMapper.toDetailsDTO(resource);
     }
 
     @Transactional
     @Override
-    public ResourceDTO create(ResourceCreateUpdateDTO resourceDTO) {
-        Expert expert = expertRepository.findById(resourceDTO.getIdExpert())
-                .orElseThrow(()->new RuntimeException("Expert not found white Id: "+resourceDTO.getIdExpert()));
+    public ResourceDetailsDTO create(ResourceCreateUpdateDTO resourceCreateUpdateDTO) {
+        Expert expert = expertRepository.findById(resourceCreateUpdateDTO.getExpertId())
+                .orElseThrow(() -> new ResourceNotFoundException("Experto no encontrado"));
 
-        Resource resource = resourceMapper.toEntity(resourceDTO);
+        SubPlan subPlan = subPlanRepository.findById(resourceCreateUpdateDTO.getSubPlanId())
+                .orElseThrow(() -> new ResourceNotFoundException("Plan de suscripcion no encontrado"));
+
+        Resource resource = resourceMapper.toResource(resourceCreateUpdateDTO);
         resource.setExpert(expert);
-        return resourceMapper.toDTO(resourceRepository.save(resource));
-    }
+        resource.setSubPlan(subPlan);
 
-
-    @Transactional(readOnly = true)
-    @Override
-    public ResourceDTO findById(Integer id) {
-        Resource resource = resourceRepository.findById(id).orElseThrow(()->new RuntimeException("Resource not found white Id "));
-        return resourceMapper.toDTO(resource);
+        return resourceMapper.toDetailsDTO(resourceRepository.save(resource));
     }
 
     @Transactional
     @Override
-    public ResourceDTO update(Integer id, ResourceCreateUpdateDTO updateResourceDTO) {
-        Resource resourceFromDb = resourceRepository.findById(id).orElseThrow(null);
-        Expert expert = expertRepository.findById(updateResourceDTO.getIdExpert()).orElse(null);
+    public ResourceDetailsDTO update(Integer id, ResourceCreateUpdateDTO resourceCreateUpdateDTO) {
+        Resource resourceFromDb = resourceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Recurso no encontrado"));
 
-        resourceRepository.findByTitle(updateResourceDTO.getTitle())
-                .filter(existingResource -> !existingResource.getTitle().equals(updateResourceDTO.getTitle()))
-                .ifPresent(existingResource -> {
-                    throw new RuntimeException("El recurso ya existe");
-                });
+        Expert expertFromDb = expertRepository.findById(resourceCreateUpdateDTO.getExpertId())
+                .orElseThrow(() -> new ResourceNotFoundException("Experto no encontrado"));
 
-        resourceFromDb.setTitle(updateResourceDTO.getTitle());
-        resourceFromDb.setDescription(updateResourceDTO.getDescription());
-        resourceFromDb.setResourceType(updateResourceDTO.getResourceType());
-        resourceFromDb.setContent(updateResourceDTO.getContent());
-        resourceFromDb.setExpert(expert);
+        SubPlan subPlanFromDb = subPlanRepository.findById(resourceCreateUpdateDTO.getSubPlanId())
+                .orElseThrow(() -> new ResourceNotFoundException("Plan de suscripcion no encontrado"));
 
-        resourceFromDb = resourceRepository.save(resourceFromDb);
-        return resourceMapper.toDTO(resourceFromDb);
+        resourceFromDb.setExpert(expertFromDb);
+        resourceFromDb.setSubPlan(subPlanFromDb);
+        resourceFromDb.setId(resourceCreateUpdateDTO.getId());
+        resourceFromDb.setTitle(resourceCreateUpdateDTO.getTitle());
+        resourceFromDb.setDescription(resourceCreateUpdateDTO.getDescription());
+        resourceFromDb.setResourceType(resourceCreateUpdateDTO.getResourceType());
+        resourceFromDb.setContent(resourceCreateUpdateDTO.getContent());
+
+        return resourceMapper.toDetailsDTO(resourceRepository.save(resourceFromDb));
     }
 
     @Transactional
     @Override
     public void delete(Integer id) {
-        Resource resource = resourceRepository.findById(id).orElseThrow(null);
+        Resource resource = resourceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Recurso no encontrado"));
         resourceRepository.delete(resource);
     }
 }

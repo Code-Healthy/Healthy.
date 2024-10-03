@@ -3,7 +3,6 @@ package com.healthy.model.entity;
 import com.healthy.model.enums.Frequency;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.List;
 
 @Data
 @Entity

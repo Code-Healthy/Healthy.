@@ -5,6 +5,7 @@ import com.healthy.dto.PlanCreateUpdateDTO;
 import com.healthy.dto.PlanDetailsDTO;
 import com.healthy.model.entity.Plan;
 import com.healthy.service.AdminPlanService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,14 +43,14 @@ public class AdminPlanController {
     }
 
     @PostMapping
-    public ResponseEntity<PlanDetailsDTO> createPlan(@RequestBody PlanCreateUpdateDTO plan){
+    public ResponseEntity<PlanDetailsDTO> createPlan(@Valid @RequestBody PlanCreateUpdateDTO plan){
         PlanDetailsDTO newPlan = adminPlanService.create(plan);
         return new ResponseEntity<>(newPlan,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PlanDetailsDTO> updatePlan(@PathVariable("id") Integer id,
-                                                     @RequestBody PlanCreateUpdateDTO plan){
+                                                     @Valid @RequestBody PlanCreateUpdateDTO plan){
         PlanDetailsDTO updatedPlan = adminPlanService.update(id, plan);
         return new ResponseEntity<>(updatedPlan,HttpStatus.OK);
     }

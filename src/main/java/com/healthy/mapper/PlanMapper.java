@@ -2,7 +2,6 @@ package com.healthy.mapper;
 
 import com.healthy.dto.PlanCreateUpdateDTO;
 import com.healthy.dto.PlanDetailsDTO;
-import com.healthy.model.entity.Goal;
 import com.healthy.model.entity.Plan;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -20,7 +19,7 @@ public class PlanMapper {
     public PlanDetailsDTO toDetailsDTO(Plan plan) {
         PlanDetailsDTO dto=modelMapper.map(plan, PlanDetailsDTO.class);
 
-        dto.setUserName(plan.getUser().getUsername());
+        dto.setUserName(plan.getProfile().getUserName());
         return dto;
     }
 

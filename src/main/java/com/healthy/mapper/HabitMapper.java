@@ -3,8 +3,6 @@ package com.healthy.mapper;
 import com.healthy.dto.HabitCreateUpdateDTO;
 import com.healthy.dto.HabitDetailsDTO;
 import com.healthy.model.entity.Habit;
-import com.healthy.model.entity.HabitType;
-import com.healthy.model.entity.Profile;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
@@ -28,6 +26,7 @@ public class HabitMapper {
     public Habit toEntity(HabitCreateUpdateDTO habitCreateUpdateDTO) {
         return modelMapper.map(habitCreateUpdateDTO, Habit.class);
     }
+
     public HabitCreateUpdateDTO toCreateUpdateDTO(Habit habit) {
         return modelMapper.map(habit, HabitCreateUpdateDTO.class);
     }

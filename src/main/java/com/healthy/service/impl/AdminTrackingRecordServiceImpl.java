@@ -29,7 +29,6 @@ import java.util.List;
 public class AdminTrackingRecordServiceImpl implements AdminTrackingRecordService {
 
     private final TrackingRecordRepository trackingRecordRepository;
-    private final UserRepository userRepository;
     private final GoalRepository goalRepository;
     private final HabitRepository habitRepository;
     private final HabitTypeRepository habitTypeRepository;
@@ -62,13 +61,10 @@ public class AdminTrackingRecordServiceImpl implements AdminTrackingRecordServic
     @Transactional
     @Override
     public TrackingRecordDetailsDTO create(TrackingRecordCreateUpdateDTO trackingRecordCreateUpdateDTO) {
-        User user = userRepository.findById(trackingRecordCreateUpdateDTO.getUser_id())
-                .orElseThrow(() -> new RuntimeException("User not found with id: "+trackingRecordCreateUpdateDTO.getUser_id()));
         Goal goal = goalRepository.findById(trackingRecordCreateUpdateDTO.getGoal_id())
                 .orElseThrow(() -> new RuntimeException("Goal not found with id: "+trackingRecordCreateUpdateDTO.getGoal_id()));
 
         TrackingRecord trackingRecord = trackingRecordMapper.toEntity(trackingRecordCreateUpdateDTO);
-        trackingRecord.setUser(user);
         trackingRecord.setGoal(goal);
         trackingRecord.setDate(LocalDateTime.now());
         return trackingRecordMapper.toDetailsDTO(trackingRecordRepository.save(trackingRecord));
@@ -77,16 +73,12 @@ public class AdminTrackingRecordServiceImpl implements AdminTrackingRecordServic
     @Transactional
     @Override
     public TrackingRecordDetailsDTO update(Integer id, TrackingRecordCreateUpdateDTO updateTrackingRecord) {
-
         TrackingRecord trackingRecordFromDb = trackingRecordRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No record found with id " + id));
 
-        User user = userRepository.findById(updateTrackingRecord.getUser_id())
-                .orElseThrow(() -> new RuntimeException("User not found with id: "+updateTrackingRecord.getUser_id()));
         Goal goal = goalRepository.findById(updateTrackingRecord.getGoal_id())
                 .orElseThrow(() -> new RuntimeException("Goal not found with id: "+updateTrackingRecord.getGoal_id()));
 
-        trackingRecordFromDb.setUser(user);
         trackingRecordFromDb.setGoal(goal);
         trackingRecordFromDb.setDate(LocalDateTime.now());
         trackingRecordFromDb.setNote(updateTrackingRecord.getNote());

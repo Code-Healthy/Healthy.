@@ -1,11 +1,9 @@
 package com.healthy.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.healthy.model.enums.PaymentStatus;
 import com.healthy.model.enums.SubscriptionStatus;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -17,28 +15,25 @@ public class Subscription {
     private Integer id;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subscription_user"))
-    private User user;
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
 
     @ManyToOne
-    @JoinColumn(name = "resource_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_subscription_resource"))
-    private Resource resource;
+    @JoinColumn(name = "sub_plan_id", nullable = false)
+    private SubPlan subPlan;
 
-    @Column(name = "start_at")
-    private LocalDateTime startDate;
+    @Column(name = "start_at", nullable = false)
+    private LocalDateTime startAt;
 
-    @Column(name = "end_at")
-    private LocalDateTime endDate;
+    @Column(name = "end_at", nullable = false)
+    private LocalDateTime endAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status")
+    @Column(name = "payment_status", nullable = false)
     private PaymentStatus paymentStatus;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "subscription_status")
+    @Column(name = "subscription_status", nullable = false)
     private SubscriptionStatus subscriptionStatus;
 
-    @Column(nullable = false)
-    private Float price;
 }

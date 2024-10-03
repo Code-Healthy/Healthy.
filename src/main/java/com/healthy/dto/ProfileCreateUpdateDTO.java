@@ -7,6 +7,7 @@ import lombok.Data;
 
 public class ProfileCreateUpdateDTO {
     private Integer id;
+    private String userName;
     private Float height;
     private Float weight;
     private Integer age;

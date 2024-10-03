@@ -15,10 +15,9 @@ public class Plan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_plan_user"))
-    private User user;
+    @JoinColumn(name = "profile_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_goal_profile"))
+    private Profile profile;
 
     @Column(name = "name", nullable = false)
     private String name;

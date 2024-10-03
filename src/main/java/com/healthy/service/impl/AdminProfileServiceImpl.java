@@ -48,8 +48,8 @@ public class AdminProfileServiceImpl implements AdminProfileService {
         profile.setUser(user);
         return profileMapper.toDetailsDTO(profileRepository.save(profile));
     }
-    @Transactional(readOnly = true)
 
+    @Transactional(readOnly = true)
     @Override
     public ProfileDetailsDTO findById(Integer id){
         Profile profile = profileRepository.findById(id)

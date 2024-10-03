@@ -2,15 +2,15 @@ package com.healthy.service.impl;
 
 import com.healthy.dto.PlanCreateUpdateDTO;
 import com.healthy.dto.PlanDetailsDTO;
+import com.healthy.exception.ResourceNotFoundException;
 import com.healthy.mapper.PlanMapper;
-import com.healthy.model.entity.Goal;
+import com.healthy.mapper.ProfileMapper;
 import com.healthy.model.entity.Plan;
-import com.healthy.model.entity.User;
+import com.healthy.model.entity.Profile;
 import com.healthy.repository.PlanRepository;
-import com.healthy.repository.UserRepository;
+import com.healthy.repository.ProfileRepository;
 import com.healthy.service.AdminPlanService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.mbeans.UserMBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,8 @@ public class AdminPlanServiceImpl implements AdminPlanService {
 
     private final PlanRepository planRepository;
     private final PlanMapper planMapper;
-    private final UserRepository userRepository;
+    private final ProfileMapper profileMapper;
+    private final ProfileRepository profileRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -46,8 +47,8 @@ public class AdminPlanServiceImpl implements AdminPlanService {
 
     @Transactional(readOnly = true)
     @Override
-    public PlanDetailsDTO findById(int id) {
-        Plan plan = planRepository.findById(id).orElseThrow(() -> new RuntimeException("Plan not"));
+    public PlanDetailsDTO findById(Integer id) {
+        Plan plan = planRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Plan "+id+" not found"));
         return planMapper.toDetailsDTO(plan);
     }
 
@@ -55,12 +56,12 @@ public class AdminPlanServiceImpl implements AdminPlanService {
     @Override
     public PlanDetailsDTO create(PlanCreateUpdateDTO planDTO) {
 
-        User user = userRepository.findById(planDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Profile profile = profileRepository.findById(planDTO.getProfileId())
+                .orElseThrow(() -> new ResourceNotFoundException("User "+planDTO.getProfileId()+" not found"));
 
         Plan plan = planMapper.toEntity(planDTO);
         plan.setStartDate(LocalDateTime.now());
-        plan.setUser(user);
+        plan.setProfile(profile);
         return planMapper.toDetailsDTO(planRepository.save(plan));
     }
 
@@ -68,24 +69,24 @@ public class AdminPlanServiceImpl implements AdminPlanService {
     @Override
     public PlanDetailsDTO update(Integer id, PlanCreateUpdateDTO updatePlan) {
 
-        Plan planFromDb = planRepository.findById(id).orElseThrow(() -> new RuntimeException("Plan not found"));
-        User user = userRepository.findById(updatePlan.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        Plan planFromDb = planRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Plan "+id+" not found"));
+        Profile profile = profileRepository.findById(updatePlan.getProfileId()).orElseThrow(() -> new ResourceNotFoundException("Perfil "+updatePlan.getProfileId()+" not found"));
 
         Plan plan = planMapper.toEntity(updatePlan);
+        plan.setStartDate(planFromDb.getStartDate());
         planFromDb.setName(updatePlan.getName());
         planFromDb.setDescription(updatePlan.getDescription());
         planFromDb.setEndDate(updatePlan.getEndDate());
-        planFromDb.setId(updatePlan.getId());
         planFromDb.setPlanStatus(updatePlan.getPlanStatus());
-        planFromDb.setUser(user);
+        planFromDb.setProfile(profile);
         planFromDb.setGoals(updatePlan.getGoals());
-        return planMapper.toDetailsDTO(planRepository.save(plan));
+        return planMapper.toDetailsDTO(planRepository.save(planFromDb));
     }
 
     @Transactional
     @Override
     public void delete(Integer id) {
-        Plan plan = planRepository.findById(id).orElseThrow(() -> new RuntimeException("Plan not found"));
+        Plan plan = planRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Plan "+id+" not found"));
         planRepository.delete(plan);
     }
 }

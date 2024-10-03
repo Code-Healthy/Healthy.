@@ -51,8 +51,8 @@ public class AdminGoalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GoalDetailsDTO> updateGoal( @Valid @PathVariable("id") Integer id,
-                                                      @RequestBody GoalCreateUpdateDTO goal){
+    public ResponseEntity<GoalDetailsDTO> updateGoal( @PathVariable("id") Integer id,
+                                                      @Valid @RequestBody GoalCreateUpdateDTO goal){
         GoalDetailsDTO updatedGoal = adminGoalService.update(id, goal);
         return new ResponseEntity<>(updatedGoal,HttpStatus.OK);
     }

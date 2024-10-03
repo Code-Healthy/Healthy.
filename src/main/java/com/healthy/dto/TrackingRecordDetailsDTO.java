@@ -20,9 +20,6 @@ public class TrackingRecordDetailsDTO {
     private LocalDateTime date;
     private String note;
 
-    //DATOS DE LA CLASE USUARIO
-    private String username;
-
     //DATOS DE GOALS
     private Float targetValue;
     private Float currentValue;

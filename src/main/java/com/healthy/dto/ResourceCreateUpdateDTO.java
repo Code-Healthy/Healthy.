@@ -5,12 +5,17 @@ import lombok.Data;
 
 @Data
 public class ResourceCreateUpdateDTO {
-    private  Integer id;
-    private  String title;
-    private  String description;
-    private ResourceType resourceType;
-    private String content;
-    private float price;
-    private Integer idExpert;
+    private Integer id;
 
+    private String title;
+
+    private String description;
+
+    private String content;
+
+    private ResourceType resourceType;
+
+    private Integer expertId;
+
+    private Integer subPlanId;
 }
