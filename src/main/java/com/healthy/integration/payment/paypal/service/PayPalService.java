@@ -66,7 +66,7 @@ public class PayPalService {
         Subscription subscription = subscriptionRepository.findById(subscriptionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Subscription not found"));
 
-        // Construcción de la solicitud de Pedido de Pago
+        //Construcción de la solicitud de Pedido de Pago
         OrderRequest orderRequest = new OrderRequest();
         orderRequest.setIntent("CAPTURE");
 
