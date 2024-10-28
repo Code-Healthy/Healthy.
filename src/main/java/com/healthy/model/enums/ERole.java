@@ -1,6 +1,6 @@
 package com.healthy.model.enums;
 
-public enum Role {
+public enum ERole {
     ADMIN,
-    USER
+    CUSTOMER
 }

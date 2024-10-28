@@ -1,25 +1,23 @@
 package com.healthy.dto;
 
+import com.healthy.model.enums.ERole;
 import com.healthy.model.enums.Gender;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class ProfileDTO {
-    private String userName;
-    private String firstName;
-    private String lastName;
-    private String email;
+public class UserProfileDTO {
+    private String FirstName;
+    private String LastName;
+    private String username;
     private String password;
     private Float height;
     private Float weight;
     private Integer age;
     private Gender gender;
     private String healthConditions;
-
-    private List<PlanDTO> plans;
-    private List<ProfileResourceDetailsDTO> resources;
-    private List<ProfileSubscriptionDTO> subPlans;
-
 }

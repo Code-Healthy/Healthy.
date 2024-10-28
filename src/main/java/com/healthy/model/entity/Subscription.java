@@ -20,6 +20,10 @@ public class Subscription {
     private Profile profile;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "sub_plan_id", nullable = false)
     private SubPlan subPlan;
 

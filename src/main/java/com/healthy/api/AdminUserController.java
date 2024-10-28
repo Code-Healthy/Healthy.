@@ -1,6 +1,5 @@
 package com.healthy.api;
 
-
 import com.healthy.model.entity.User;
 import com.healthy.service.AdminUserService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/admin/users")
-
 
 public class AdminUserController {
     private final AdminUserService userService;

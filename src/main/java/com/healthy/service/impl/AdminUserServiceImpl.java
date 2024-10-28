@@ -17,9 +17,11 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Transactional
     @Override
     public User registerUser(User user) {
-        if(userRepository.existsByEmail(user.getEmail())) {
-            throw new BadRequestException("El email "+user.getEmail()+" ya esta registrado");
+        if(userRepository.existsByUserName(user.getUserName())) {
+            throw new BadRequestException("El username "+user.getUserName()+" ya esta registrado");
         }
+
         return userRepository.save(user);
     }
+
 }

@@ -1,6 +1,6 @@
 package com.healthy.model.entity;
 
-import jakarta.persistence.*;
+import  jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 
